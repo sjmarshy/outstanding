@@ -1,18 +1,19 @@
 import { h, app } from 'hyperapp';
 import { title } from './src/components/title';
-
-const state = {
-    seeds: 1,
-    plants: 0,
-};
+import { types } from './src/constants/types';
+import { state } from './src/constants/state';
 
 const actions = {
-    plant: () => s => ({
-        seeds: s.seeds - 1,
-        plants: s.plants + 1,
+    plant: type => s => ({
+        seeds: s.seeds.type[type] - 1,
+        plants: s.plants.type[type] + 1,
     }),
 };
 
-const view = (s, a) => h('div', {}, title(s, a));
+const view = (s, a) =>
+    h('div', {}, [
+        title(s, a),
+        h('button', { onClick: () => a.plant(types.standard) }, 'plant'),
+    ]);
 
 app(state, actions, view, document.body);
