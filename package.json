@@ -1,0 +1,18 @@
+{
+    "name": "outstanding",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "Sam Marshall <sjmarshy@gmail.com>",
+    "license": "MIT",
+    "scripts": {
+        "start": "parcel index.html",
+        "build": "parcel build index.js",
+        "deploy": "yarn build; pushd dist; now -n outstanding; popd"
+    },
+    "devDependencies": {
+        "parcel-bundler": "^1.7.0"
+    },
+    "dependencies": {
+        "hyperapp": "^1.2.5"
+    }
+}
