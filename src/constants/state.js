@@ -8,7 +8,10 @@ const state = {
     },
     plants: {
         type: {
-            [types.standard]: 0,
+            [types.standard]: [],
+        },
+        harvestable: {
+            [types.standard]: [],
         },
     },
 };
