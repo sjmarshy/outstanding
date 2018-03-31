@@ -1,4 +1,5 @@
 import { h, app } from 'hyperapp';
+import { title } from './src/components/title';
 
 const state = {
     seeds: 1,
@@ -6,23 +7,12 @@ const state = {
 };
 
 const actions = {
-    plant: value => state => ({
-        seeds: state.seeds - 1,
-        plants: state.plants + 1,
+    plant: () => s => ({
+        seeds: s.seeds - 1,
+        plants: s.plants + 1,
     }),
 };
 
-const view = (s, a) =>
-    h(
-        'div',
-        {},
-        h(
-            'h1',
-            {},
-            `Outstanding: A Tale of ${
-                s.seeds === 1 ? 'a Seed' : `${s.seeds} Seeds`
-            }`
-        )
-    );
+const view = (s, a) => h('div', {}, title(s, a));
 
 app(state, actions, view, document.body);
