@@ -22,6 +22,12 @@ const actions = {
         const getPlantAmount = getPlantByType(type);
         const setPlantAmount = setPlantByType(type);
 
+        const seedAmount = getSeedAmount(s);
+
+        if (seedAmount === 0) {
+            return s;
+        }
+
         return setPlantAmount(getPlantAmount(s) + 1)(
             setSeedAmount(getSeedAmount(s) - 1)(s),
         );
@@ -32,10 +38,9 @@ const view = (s, a) =>
     h('div', {}, [
         title(s, a),
         h('div', {}, [
-            h('p', {}, `seeds: ${s.seeds.type[types.standard]}`),
-            h('p', {}, `plants: ${s.plants.type[types.standard]}`),
+            h('p', {}, `plants: ${getPlantByType(types.standard)(s)}`),
         ]),
-        h('button', { onclick: () => a.plant(types.standard) }, 'plant'),
+        h('button', { onclick: () => a.plant(types.standard) }, 'plant a seed'),
     ]);
 
 app(state, actions, view, document.body);
