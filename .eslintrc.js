@@ -3,7 +3,8 @@ module.exports = {
     rules: {
         'import/prefer-default-export': false,
         indent: [2, 4],
-        'arrow-parens': false,
+        'arrow-parens': 0,
+        'function-paren-newline': 0,
     },
     env: {
         browser: true,

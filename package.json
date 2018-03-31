@@ -25,10 +25,13 @@
     "dependencies": {
         "autoprefixer": "^8.2.0",
         "hyperapp": "^1.2.5",
-        "postcss-modules": "^1.1.0"
+        "postcss-modules": "^1.1.0",
+        "ramda": "^0.25.0"
     },
     "ava": {
         "babel": "inherit",
-        "require": ["esm"]
+        "require": [
+            "esm"
+        ]
     }
 }
