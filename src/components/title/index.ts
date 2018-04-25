@@ -1,15 +1,15 @@
 import { h } from 'hyperapp';
-import { totalSeeds } from '../../utils/totalSeeds';
 
 import classNames from './index.css';
+import { state } from '../../constants/state';
 
-const title = s =>
+const title = (s: typeof state) =>
     h(
         'h1',
         { class: classNames.title },
 
         `Outstanding: A Tale of ${
-            totalSeeds(s) === 1 ? 'a Seed' : `${totalSeeds(s)} Seeds`
+            s.seeds.countAll() === 1 ? 'a Seed' : `${s.seeds.countAll()} Seeds`
         }`,
     );
 
