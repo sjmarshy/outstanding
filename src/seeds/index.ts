@@ -21,8 +21,8 @@ export class SeedBin {
     }
 
     sameBreed(bin: SeedBin): boolean {
-        console.log('breed check');
-        return this._name === bin.name();
+        // console.log('breed check', this._name, bin.name(), this.name() === bin.name());
+        return this.name() === bin.name();
     }
 }
 
@@ -34,6 +34,7 @@ export class SeedStorage {
     }
 
     retrieve(binName): Option<SeedBin> {
+        console.log(this.bins);
         return fromNullable(this.bins.find(bin => bin.name() === binName));
     }
 
@@ -46,23 +47,15 @@ export class SeedStorage {
     }
 
     merge(store: SeedStorage): SeedStorage {
+        console.log('merging ', this, 'with ', store)
         return new SeedStorage(
             this.bins.concat(store.bins).reduce(
                 (memo: Array<SeedBin>, bin: SeedBin) => {
-                    const newBin = fromNullable(
-                        memo.find(bin_ => bin.sameBreed(bin_)),
-                    )
-                        .map(bin_ => {
-                            return new SeedBin(
-                                bin_.name(),
-                                bin.count() + bin_.count(),
-                            );
-                        })
-                        .getOrElse(bin);
-
-                    return memo
-                        .filter(bin_ => bin.sameBreed(bin_))
-                        .concat(newBin);
+                    if (memo.some(bin_ => bin_.sameBreed(bin))) {
+                        return memo.map(bin_ => bin_.sameBreed(bin) ? bin.add(bin_.count()) : bin);
+                    } else {
+                        return memo.concat(bin);
+                    }
                 },
                 [] as Array<SeedBin>,
             ),
