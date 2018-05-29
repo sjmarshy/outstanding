@@ -1,4 +1,5 @@
 import { SeedStorage, SeedBin } from '../seeds';
+import { ONE_SECOND } from '../constants/time';
 
 export class GrowSchedule {
     constructor(private _start: number) {}
@@ -20,6 +21,22 @@ export class GrowingPlant {
     }
 }
 
+/**
+ * the result of a harvest.
+ * Contains the field that has been harvested, with any still growing plants intact,
+ * and the harvested seeds
+ */
+export class Harvest {
+    constructor(private seeds: SeedStorage, private field: Field) {}
+    public extractSeeds(): SeedStorage {
+        return this.seeds;
+    }
+
+    public getField(): Field {
+        return this.field;
+    }
+}
+
 export class Field {
     constructor(private growing: Array<GrowingPlant> = []) {}
 
@@ -31,34 +48,49 @@ export class Field {
         return this.growing.filter(p => p.isGrown()).length;
     }
 
-    public sew(type: string) {
+    /**
+     *
+     * @param type the type of seed to sew
+     */
+    public sew(type: string): Field {
         return new Field(
             this.growing.concat(
-                new GrowingPlant(type, new GrowSchedule(Date.now())),
+                new GrowingPlant(
+                    type,
+                    new GrowSchedule(Date.now() + ONE_SECOND * 3),
+                ),
             ),
         );
     }
 
-    public harvest(): { seeds: SeedStorage; field: Field } {
-        const grown = this.growing.filter(plant => plant.isGrown());
-        const seedTypes: { [x: string]: number } = grown.reduce(
-            (memo, plant) =>
-                Object.assign({}, memo, {
+    /**
+     * produce a survey of the counts of harvestable seeds and their types
+     */
+    public harvestSurvey(): Record<string, number> {
+        return this.growing.filter(plant => plant.isGrown()).reduce(
+            (survey, plant) =>
+                Object.assign(survey, {
                     [plant.name()]:
-                        memo[plant.name()] !== undefined
-                            ? memo[plant.name()] + 1
+                        survey[plant.name()] !== undefined
+                            ? survey[plant.name()] + 1
                             : 1,
                 }),
             {},
         );
+    }
 
-        return {
-            seeds: new SeedStorage(
-                Object.keys(seedTypes).map(
-                    type => new SeedBin(type, seedTypes[type]),
+    /**
+     * return a Harvest object with the Harvested field and the filled SeedBins
+     */
+    public harvest(): Harvest {
+        const survey = this.harvestSurvey();
+        return new Harvest(
+            new SeedStorage(
+                Object.keys(survey).map(
+                    type => new SeedBin(type, survey[type]),
                 ),
             ),
-            field: new Field(this.growing.filter(plant => !plant.isGrown())),
-        };
+            new Field(this.growing.filter(plant => !plant.isGrown())),
+        );
     }
 }
