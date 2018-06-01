@@ -66,6 +66,5 @@ const a: typeof actions = app(state, actions, view, document.body);
 // Game Loop
 setInterval(() => {
     a.time.ping();
-
-    console.dir(a.getState());
+    // console.dir(a.getState());
 }, 1000);

@@ -6,7 +6,7 @@
     "license": "MIT",
     "scripts": {
         "start": "parcel index.html",
-        "build": "parcel build index.js",
+        "build": "parcel build index.html",
         "test": "jest",
         "deploy": "yarn build; pushd dist; now -n outstanding; popd"
     },
@@ -39,13 +39,6 @@
             "^.+\\.tsx?$": "ts-jest"
         },
         "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-        "moduleFileExtensions": [
-            "ts",
-            "tsx",
-            "js",
-            "jsx",
-            "json",
-            "node"
-        ]
+        "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
     }
 }

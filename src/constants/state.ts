@@ -1,5 +1,6 @@
 import { types } from './types';
-import { SeedStorage, SeedBin } from '../seeds';
+import { SeedBin } from '../seeds/SeedBin';
+import { SeedStorage } from '../seeds';
 import { Field } from '../field';
 
 export class Timer {

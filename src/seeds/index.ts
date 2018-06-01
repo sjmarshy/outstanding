@@ -18,7 +18,7 @@ export class SeedStorage {
     }
 
     retrieve(binName: string): Option<SeedBin> {
-        console.log(this.bins);
+        // console.log(this.bins);
         return fromNullable(
             this.bins.find((bin: SeedBin) => bin.name() === binName),
         );
