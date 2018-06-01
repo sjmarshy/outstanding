@@ -2,19 +2,29 @@ import { lensPath, view, set, over, curryN, compose } from 'ramda';
 import option, { Option, fromNullable } from 'fp-ts/lib/Option';
 import { SeedBin } from './SeedBin';
 
+/**
+ * a collection of SeedBins
+ */
 export class SeedStorage {
     constructor(private bins: Array<SeedBin> = []) {}
 
-    store(bin) {
+    /**
+     * create a new seed storage with the provided seed bin
+     * @todo we should not have more than one bin for any breed of bin, they should merge instead
+     * @param bin the seed bin to store
+     */
+    store(bin: SeedBin) {
         return new SeedStorage(this.bins.concat(bin));
     }
 
-    retrieve(binName): Option<SeedBin> {
+    retrieve(binName: string): Option<SeedBin> {
         console.log(this.bins);
-        return fromNullable(this.bins.find(bin => bin.name() === binName));
+        return fromNullable(
+            this.bins.find((bin: SeedBin) => bin.name() === binName),
+        );
     }
 
-    count(binName): Option<number> {
+    count(binName: string): Option<number> {
         return this.retrieve(binName).map(sb => sb.count());
     }
 
@@ -22,8 +32,11 @@ export class SeedStorage {
         return this.bins.reduce((count, bin) => count + bin.count(), 0);
     }
 
+    /**
+     * merge the provided SeedStorage with this one
+     * @param store
+     */
     merge(store: SeedStorage): SeedStorage {
-        console.log('merging ', this, 'with ', store);
         return new SeedStorage(
             this.bins.concat(store.bins).reduce(
                 (memo: Array<SeedBin>, bin: SeedBin) => {

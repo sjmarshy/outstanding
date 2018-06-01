@@ -1,4 +1,5 @@
-import { SeedStorage, SeedBin } from '../seeds';
+import { SeedBin } from '../seeds/SeedBin';
+import { SeedStorage } from '../seeds';
 import { ONE_SECOND } from '../constants/time';
 
 export class GrowSchedule {

@@ -6,21 +6,25 @@
     "license": "MIT",
     "scripts": {
         "start": "parcel index.html",
-        "test": "ava **/test.js",
         "build": "parcel build index.js",
+        "test": "jest",
         "deploy": "yarn build; pushd dist; now -n outstanding; popd"
     },
     "devDependencies": {
         "@babel/core": "^7.0.0-beta.42",
         "@babel/register": "^7.0.0-beta.42",
-        "ava": "^0.25.0",
+        "@types/jest": "^22.2.3",
+        "@types/ramda": "^0.25.32",
         "babel-preset-env": "^1.6.1",
         "eslint": "^4.19.1",
         "eslint-config-airbnb-base": "^12.1.0",
         "eslint-plugin-import": "^2.10.0",
         "esm": "^3.0.14",
+        "jest": "^23.1.0",
         "parcel-bundler": "^1.7.0",
         "prettier": "^1.11.1",
+        "ts-jest": "^22.4.6",
+        "tslint": "^5.10.0",
         "typescript": "^2.8.3"
     },
     "dependencies": {
@@ -30,10 +34,18 @@
         "postcss-modules": "^1.1.0",
         "ramda": "^0.25.0"
     },
-    "ava": {
-        "babel": "inherit",
-        "require": [
-            "esm"
+    "jest": {
+        "transform": {
+            "^.+\\.tsx?$": "ts-jest"
+        },
+        "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+        "moduleFileExtensions": [
+            "ts",
+            "tsx",
+            "js",
+            "jsx",
+            "json",
+            "node"
         ]
     }
 }
