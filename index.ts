@@ -1,6 +1,7 @@
 import { h, app } from 'hyperapp';
 
-import { SeedBin, SeedStorage } from './src/seeds';
+import { SeedBin } from './src/seeds/SeedBin';
+import { SeedStorage } from './src/seeds';
 
 import { title } from './src/components/title';
 
@@ -28,10 +29,10 @@ const actions = {
     },
 
     harvest: (type: string) => (s: typeof state): typeof state => {
-        const { field, seeds } = s.field.harvest();
+        const harvest = s.field.harvest();
         return Object.assign({}, s, {
-            seeds: s.seeds.merge(seeds),
-            field,
+            seeds: s.seeds.merge(harvest.extractSeeds()),
+            field: harvest.getField(),
         });
     },
 

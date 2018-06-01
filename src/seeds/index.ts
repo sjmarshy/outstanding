@@ -1,30 +1,6 @@
 import { lensPath, view, set, over, curryN, compose } from 'ramda';
 import option, { Option, fromNullable } from 'fp-ts/lib/Option';
-
-export class SeedBin {
-    constructor(private _name: string, private _count: number = 0) {}
-
-    count() {
-        return this._count;
-    }
-
-    name() {
-        return this._name;
-    }
-
-    add(count = 1) {
-        return new SeedBin(this._name, this._count + count);
-    }
-
-    remove(count = 1) {
-        return new SeedBin(this._name, Math.max(this._count - count, 0));
-    }
-
-    sameBreed(bin: SeedBin): boolean {
-        // console.log('breed check', this._name, bin.name(), this.name() === bin.name());
-        return this.name() === bin.name();
-    }
-}
+import { SeedBin } from './SeedBin';
 
 export class SeedStorage {
     constructor(private bins: Array<SeedBin> = []) {}
@@ -47,12 +23,17 @@ export class SeedStorage {
     }
 
     merge(store: SeedStorage): SeedStorage {
-        console.log('merging ', this, 'with ', store)
+        console.log('merging ', this, 'with ', store);
         return new SeedStorage(
             this.bins.concat(store.bins).reduce(
                 (memo: Array<SeedBin>, bin: SeedBin) => {
                     if (memo.some(bin_ => bin_.sameBreed(bin))) {
-                        return memo.map(bin_ => bin_.sameBreed(bin) ? bin.add(bin_.count()) : bin);
+                        return memo.map(
+                            bin_ =>
+                                bin_.sameBreed(bin)
+                                    ? bin.add(bin_.count())
+                                    : bin,
+                        );
                     } else {
                         return memo.concat(bin);
                     }
