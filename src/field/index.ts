@@ -1,5 +1,5 @@
 import { SeedBin } from '../seeds/SeedBin';
-import { SeedStorage } from '../seeds';
+import { SeedStorage } from '../seeds/SeedStorage';
 import { ONE_SECOND } from '../constants/time';
 
 export class GrowSchedule {
@@ -76,7 +76,7 @@ export class Field {
                             ? survey[plant.name()] + 1
                             : 1,
                 }),
-            {},
+            {} as Record<string, number>,
         );
     }
 

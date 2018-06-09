@@ -1,6 +1,6 @@
-import { lensPath, view, set, over, curryN, compose } from 'ramda';
 import option, { Option, fromNullable } from 'fp-ts/lib/Option';
-import { SeedBin } from './SeedBin';
+import { findFirst } from 'fp-ts/lib/Array';
+import { SeedBin } from '../SeedBin';
 
 /**
  * a collection of SeedBins
@@ -18,10 +18,7 @@ export class SeedStorage {
     }
 
     retrieve(binName: string): Option<SeedBin> {
-        // console.log(this.bins);
-        return fromNullable(
-            this.bins.find((bin: SeedBin) => bin.name() === binName),
-        );
+        return findFirst(this.bins, bin => bin.name() === binName);
     }
 
     count(binName: string): Option<number> {

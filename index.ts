@@ -1,11 +1,9 @@
 import { h, app } from 'hyperapp';
 
 import { SeedBin } from './src/seeds/SeedBin';
-import { SeedStorage } from './src/seeds';
+import { SeedStorage } from './src/seeds/SeedStorage';
 
 import { title } from './src/components/title';
-
-import { beforeNow } from './src/utils/beforeNow';
 
 import { types } from './src/constants/types';
 import { state, Timer } from './src/constants/state';
@@ -28,7 +26,7 @@ const actions = {
         });
     },
 
-    harvest: (type: string) => (s: typeof state): typeof state => {
+    harvest: (type: string) => (s: typeof state) => {
         const harvest = s.field.harvest();
         return Object.assign({}, s, {
             seeds: s.seeds.merge(harvest.extractSeeds()),
@@ -36,17 +34,19 @@ const actions = {
         });
     },
 
-    getState: () => (s): typeof state => s,
+    getState: () => (s: typeof state) => s,
 
     time: {
         ping: () => (t: Timer) => {
+            console.log('ping');
             return t.ping();
         },
     },
 };
 
-const view = (s: typeof state, a) =>
-    h('div', {}, [
+const view = (s: typeof state, a: typeof actions) => {
+    console.log(s.time instanceof Timer);
+    return h('div', {}, [
         title(s),
         h('section', {}, h('p', {}, `time ${s.time.value()}`)),
         h('div', {}, [
@@ -60,11 +60,12 @@ const view = (s: typeof state, a) =>
             'harvest a seed',
         ),
     ]);
+};
 
 const a: typeof actions = app(state, actions, view, document.body);
 
 // Game Loop
-setInterval(() => {
+setTimeout(() => {
+    console.dir(a.getState());
     a.time.ping();
-    // console.dir(a.getState());
 }, 1000);
