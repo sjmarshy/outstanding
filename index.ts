@@ -1,7 +1,6 @@
 import { h, app } from 'hyperapp';
 
-import { SeedBin } from './src/seeds/SeedBin';
-import { SeedStorage } from './src/seeds/SeedStorage';
+import { SeedBin, SeedStorage } from './src/seeds';
 
 import { title } from './src/components/title';
 
@@ -38,14 +37,12 @@ const actions = {
 
     time: {
         ping: () => (t: Timer) => {
-            console.log('ping');
             return t.ping();
         },
     },
 };
 
 const view = (s: typeof state, a: typeof actions) => {
-    console.log(s.time instanceof Timer);
     return h('div', {}, [
         title(s),
         h('section', {}, h('p', {}, `time ${s.time.value()}`)),
@@ -65,7 +62,6 @@ const view = (s: typeof state, a: typeof actions) => {
 const a: typeof actions = app(state, actions, view, document.body);
 
 // Game Loop
-setTimeout(() => {
-    console.dir(a.getState());
+setInterval(() => {
     a.time.ping();
 }, 1000);
